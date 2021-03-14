@@ -35,11 +35,15 @@ def color():
             req = request.get_json(silent=True)
 
             tmp_color = None
-            if req is not None and req.get('color') is not None and req.get('color').startswith('#') and len(
-                    req.get('color')) == 7:
-                tmp_color = req.get('color')
-            elif request.method == 'PUT':
-                tmp_color = random_color()
+
+            try:
+                if req is not None and req.get('color') is not None and req.get('color').startswith('#') and len(
+                        req.get('color')) == 7:
+                    tmp_color = req.get('color')
+                elif request.method == 'PUT':
+                    tmp_color = random_color()
+            except AttributeError:
+                pass
 
             if req is not None and req.get('brightness') is not None and 0 <= int(req.get('brightness')) <= 100:
                 for led in leds:
